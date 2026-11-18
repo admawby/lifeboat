@@ -1,0 +1,20 @@
+# Lifeboat on phoenix (Synology DSM 7, Container Manager).
+# Shares are mounted read-only under /source; restores land in "Lifeboat Restores" on the root share.
+services:
+  lifeboat:
+    build: .
+    image: local/lifeboat:latest
+    container_name: lifeboat
+    restart: unless-stopped
+    ports:
+      - "8850:8850"
+    environment:
+      LIFEBOAT_HOST: phoenix
+      TZ: America/New_York
+    volumes:
+      - ./data:/data
+      - /volume1/root:/source/root:ro
+      - /volume1/photo:/source/photo:ro
+      - /volume1/homes:/source/homes:ro
+      - /volume1/music:/source/music:ro
+      - "/volume1/root/Lifeboat Restores:/restore"

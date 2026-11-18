@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1418">
+<title>Lifeboat · NAS backups</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230b1418'/%3E%3Cpath d='M6 15h20l-3 8H9z' fill='%23ff7a45'/%3E%3Cpath d='M16 5v9M16 5l6 8h-6' stroke='%23e9f1f2' stroke-width='2' fill='none' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<a class="sr-only" href="#main">Skip to content</a>
+<div class="shell">
+  <aside class="rail">
+    <a class="brand" href="#overview" aria-label="Lifeboat overview">
+      <svg width="36" height="36" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#13232a"/><path d="M6 15h20l-3 8H9z" fill="#ff7a45"/><path d="M16 5v9M16 5l6 8h-6" stroke="#e9f1f2" stroke-width="2" fill="none" stroke-linejoin="round"/></svg>
+      <span><b>Lifeboat</b><small id="hostline">phoenix → B2</small></span>
+    </a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#overview" data-view="overview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 12c3 0 3-2 6-2s3 2 6 2 3-2 6-2M3 17c3 0 3-2 6-2s3 2 6 2 3-2 6-2M12 3v5"/></svg><span>Overview</span></a>
+      <a href="#versions" data-view="versions"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="4" y="4" width="16" height="5" rx="1.5"/><rect x="4" y="11" width="16" height="5" rx="1.5"/><path d="M6 20h12"/></svg><span>Versions</span></a>
+      <a href="#activity" data-view="activity"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 12h4l3-7 4 14 3-7h4"/></svg><span>Activity</span></a>
+      <a href="#verify" data-view="verify"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.2-8 9-4.6-.8-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span>Verify</span><span class="badge" id="issueBadge" hidden></span></a>
+      <a href="#settings" data-view="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.6-2-3.4-2.4 1a7 7 0 0 0-2-1.2L14 3h-4l-.5 2.6a7 7 0 0 0-2 1.2l-2.4-1-2 3.4 2 1.6a7 7 0 0 0 0 2.4l-2 1.6 2 3.4 2.4-1a7 7 0 0 0 2 1.2L10 21h4l.5-2.6a7 7 0 0 0 2-1.2l2.4 1 2-3.4-2-1.6c.1-.4.1-.8.1-1.2z"/></svg><span>Settings</span></a>
+    </nav>
+    <div class="rail-foot">
+      <span><i class="dot" id="liveDot"></i><span id="liveText">connecting…</span></span>
+      <span id="resticVer"></span>
+    </div>
+  </aside>
+
+  <main id="main" tabindex="-1">
+    <section class="view" id="view-overview" aria-labelledby="h-overview"></section>
+    <section class="view" id="view-versions" aria-labelledby="h-versions"></section>
+    <section class="view" id="view-activity" aria-labelledby="h-activity"></section>
+    <section class="view" id="view-verify" aria-labelledby="h-verify"></section>
+    <section class="view" id="view-settings" aria-labelledby="h-settings"></section>
+  </main>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" tabindex="-1">
+  <header>
+    <div class="dtop">
+      <div>
+        <p class="eyebrow" id="drawerEyebrow">Browse version</p>
+        <h3 id="drawerTitle">—</h3>
+      </div>
+      <button class="iconbtn" id="drawerClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <nav class="crumbs" id="crumbs" aria-label="Folder path"></nav>
+    <div class="inline" id="drawerActions"></div>
+  </header>
+  <div class="body" id="drawerBody"></div>
+</aside>
+
+<dialog id="dlg"></dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="/app.js"></script>
+</body>
+</html>
