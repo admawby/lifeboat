@@ -14,7 +14,7 @@
 <body>
 <a class="sr-only" href="#main">Skip to content</a>
 <div class="shell">
-  <aside class="rail">
+  <aside class="rail" id="rail">
     <a class="brand" href="#overview" aria-label="Lifeboat overview">
       <svg width="36" height="36" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#13232a"/><path d="M6 15h20l-3 8H9z" fill="#ff7a45"/><path d="M16 5v9M16 5l6 8h-6" stroke="#e9f1f2" stroke-width="2" fill="none" stroke-linejoin="round"/></svg>
       <span><b>Lifeboat</b><small id="hostline">phoenix → B2</small></span>
@@ -26,6 +26,9 @@
       <a href="#verify" data-view="verify"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3l8 3v6c0 4.5-3.4 8.2-8 9-4.6-.8-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg><span>Verify</span><span class="badge" id="issueBadge" hidden></span></a>
       <a href="#settings" data-view="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1.2l2-1.6-2-3.4-2.4 1a7 7 0 0 0-2-1.2L14 3h-4l-.5 2.6a7 7 0 0 0-2 1.2l-2.4-1-2 3.4 2 1.6a7 7 0 0 0 0 2.4l-2 1.6 2 3.4 2.4-1a7 7 0 0 0 2 1.2L10 21h4l.5-2.6a7 7 0 0 0 2-1.2l2.4 1 2-3.4-2-1.6c.1-.4.1-.8.1-1.2z"/></svg><span>Settings</span></a>
     </nav>
+    <button class="rail-toggle" id="railToggle" aria-expanded="true" aria-controls="rail" title="Collapse sidebar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span>Collapse</span>
+    </button>
     <div class="rail-foot">
       <span><i class="dot" id="liveDot"></i><span id="liveText">connecting…</span></span>
       <span id="resticVer"></span>

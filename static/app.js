@@ -273,9 +273,9 @@
           <div style="display:grid; gap: var(--s4); min-width:0">
             <div class="live-stats" id="liveStats"></div>
             <canvas class="spark" id="spark" aria-hidden="true"></canvas>
-            <ul class="current-files" id="curFiles"></ul>
           </div>
-        </div>`;
+        </div>
+        <ul class="current-files" id="curFiles" aria-label="Files being uploaded"></ul>`;
     }
     $("#liveTitle").textContent = `${job.title || KIND[job.kind]} · ${job.phase || ""}`;
     $("#livePill").innerHTML = pill("s-run", `Run #${job.run_id}`);
@@ -287,7 +287,7 @@
       <div><span>${job.kind === "restore" ? "Restored" : "Processed"}</span><b>${B(done)} / ${B(p.total_bytes)}</b></div>
       <div><span>Files</span><b>${N(files)} / ${N(p.total_files)}</b></div>
       <div><span>${p.seconds_remaining ? "Time left" : "Elapsed"}</span><b>${p.seconds_remaining ? dur(p.seconds_remaining) : dur(Date.now() / 1000 - job.started_at)}</b></div>`;
-    $("#curFiles").innerHTML = (p.current_files || []).slice(0, 2).map((f) => `<li title="${esc(f)}">↑ ${esc(f)}</li>`).join("");
+    $("#curFiles").innerHTML = (p.current_files || []).slice(0, 2).map((f) => `<li title="${esc(f)}"><span class="arr" aria-hidden="true">↑</span><span class="path"><bdi>${esc(f)}</bdi></span></li>`).join("");
     drawSpark($("#spark"), job.tx_hist || []);
   }
 
@@ -299,7 +299,7 @@
     const g = cv.getContext("2d"); g.scale(dpr, dpr); g.clearRect(0, 0, w, h);
     const pts = data.slice(-120), max = Math.max(1, ...pts);
     if (pts.length < 2) return;
-    const x = (i) => (i / (pts.length - 1)) * w, y = (v) => h - 4 - (v / max) * (h - 12);
+    const x = (i) => (i / (pts.length - 1)) * w, y = (v) => h - 4 - (v / max) * (h - 24);
     const grad = g.createLinearGradient(0, 0, 0, h); grad.addColorStop(0, "rgba(255,122,69,.35)"); grad.addColorStop(1, "rgba(255,122,69,0)");
     g.beginPath(); g.moveTo(0, h); pts.forEach((v, i) => g.lineTo(x(i), y(v))); g.lineTo(w, h); g.closePath(); g.fillStyle = grad; g.fill();
     g.beginPath(); pts.forEach((v, i) => (i ? g.lineTo(x(i), y(v)) : g.moveTo(x(i), y(v)))); g.strokeStyle = "#ff7a45"; g.lineWidth = 1.5; g.stroke();
@@ -778,6 +778,20 @@
     const el = $("#selList"); if (!el) return;
     el.innerHTML = S.sel.size ? [...S.sel].sort().map((p) => `<span class="chip">${esc(p.replace(/^\/source\//, ""))}</span>`).join("") : `<span class="muted">Nothing selected</span>`;
   }
+
+  // ---------------------------------------------------------------- collapsible sidebar (remembered per browser)
+  function setRail(collapsed) {
+    $(".shell").classList.toggle("collapsed", collapsed);
+    const t = $("#railToggle");
+    t.setAttribute("aria-expanded", String(!collapsed));
+    t.title = collapsed ? "Expand sidebar" : "Collapse sidebar";
+    $("span", t).textContent = collapsed ? "Expand" : "Collapse";
+    $$(".nav a").forEach((a) => (a.title = collapsed ? $("span:not(.badge)", a).textContent.trim() : ""));
+    try { localStorage.setItem("lifeboat.rail", collapsed ? "1" : "0"); } catch { /* private mode */ }
+    setTimeout(() => S.live && S.view === "overview" && renderLive(), 520);   // resize the sparkline canvas
+  }
+  $("#railToggle").onclick = () => setRail(!$(".shell").classList.contains("collapsed"));
+  try { if (localStorage.getItem("lifeboat.rail") === "1") setRail(true); } catch { /* ignore */ }
 
   // ---------------------------------------------------------------- boot
   route();
